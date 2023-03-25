@@ -14,8 +14,9 @@
             (None)
         {% else %}
             {% for line in course_results%}
-                <a href="/classresults.html">{{line.getclassid()}}</a>
-                {{line.formattedLine()}}<br>
+                <a href="/classresults.html" name="classid">{{line.getclassid()}}</a>
+                 {{line.getdept()}} {{line.getnum()}} {{line.getarea()}} {{line.gettitle()}}
+                  <br>
             {%end for%}
         {% endif %}
         <br>
