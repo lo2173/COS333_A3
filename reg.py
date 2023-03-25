@@ -49,7 +49,7 @@ def search_results():
         area = ''
     if title is None:
         title = ''
-    html_code = flask.render_template('searchresults.html',
+    html_code = flask.render_template('regresults.html',
         course_results = course_results_,
         dept = dept,
         num = num,
