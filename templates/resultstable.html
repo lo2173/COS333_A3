@@ -9,7 +9,7 @@
     {% if course_results|length != 0%}
         {%for line in course_results%}
             <tr>
-                <td><a href="/classresults.html">{{line.getclassid()}}</a></td>
+                <td><a href="/regdetails?results={{line.getclassid()}}" name = "class_id">{{line.getclassid()}}</a></td>
                 <td>{{line.getdept()}}</td>
                 <td>{{line.getnum()}}</td>
                 <td>{{line.getarea()}}</td>
