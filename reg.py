@@ -1,9 +1,7 @@
 #-----------------------------------------------------------------------
 # Author: Lois I Omotara
 # reg.py
-# []need to ask how to get cookies: set cookie
 #-----------------------------------------------------------------------
-import html
 import flask
 import databasesearch as ds
 import classsearch as cs
@@ -65,9 +63,17 @@ def search_results():
 @app.route('/regdetails',methods=['GET'])
 def regdetails():
     prev_dept = flask.request.cookies.get('deptcookie')
+    if prev_dept.find('None')>=0:
+        prev_dept = ''
     prev_num = flask.request.cookies.get('numcookie')
+    if prev_num.find('None')>=0:
+        prev_num = ''
     prev_area = flask.request.cookies.get('areacookie')
+    if prev_area.find('None')>=0:
+        prev_area = ''
     prev_title = flask.request.cookies.get('titlecookie')
+    if prev_title.find('None')>=0:
+        prev_title = ''
     try:
         classid = flask.request.url.split('=')[1]
     except IndexError:
