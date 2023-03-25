@@ -8,17 +8,7 @@
             <br>
         <h2>Class Search</h2>
         {% include 'searchform.html' %}
-        <strong>ClassId  Num  Area  Title</strong>
-        <br>
-        {% if course_results| length == 0: %}
-            (None)
-        {% else %}
-            {% for line in course_results%}
-                <a href="/classresults.html" name="classid">{{line.getclassid()}}</a>
-                 {{line.getdept()}} {{line.getnum()}} {{line.getarea()}} {{line.gettitle()}}
-                  <br>
-            {%end for%}
-        {% endif %}
+        {%include 'resultstable.html'%}
         <br>
         {%include 'footer.html'%}
     </body>

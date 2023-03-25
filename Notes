@@ -1,0 +1,7 @@
+-need to either create a datatype that will seperate the query_result from
+databasesearch.py into the class_result and the rest or do all the formatting in
+HTML
+-need to deal with footer
+-how to get course_id on class page?
+-seperate homepage from search results needed?
+-don't need doctype / title for include HTMLs
