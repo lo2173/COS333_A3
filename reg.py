@@ -23,8 +23,10 @@ def search_results():
     search = ds.DatabaseSearch()
     rawsearch = search.fullsearch(idept=dept,icoursenum=num,
     iarea=area, ititle=title)
-    course_results = []
+    course_results_ = []
     for row in rawsearch:
-        course_results.append(line.LineParser(row))
-    html_code = flask.render_template('searchresults.html')
+        course_results_.append(line.LineParser(row))
+    html_code = flask.render_template('searchresults.html',course_results = course_results_)
+    response = flask.make_response(html_code)
+    return response
 #@app.route('/classresult',methods=['GET'])
