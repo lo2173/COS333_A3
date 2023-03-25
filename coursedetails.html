@@ -1,0 +1,11 @@
+<h2>Course Details (course id {{course_id}})/h2>
+<br>
+{%for line in dept_and_nums%}
+    <strong>Dept and Number: </strong>{{line}}<br>
+{%endfor%}
+<strong>Area: </strong>{{area}}
+<strong>Title: </strong>{{title}}
+<strong>Description: </strong>{{description}}
+{%for line in professors%}
+    <strong>Professor: </strong>{{line}}
+{%endfor%}
