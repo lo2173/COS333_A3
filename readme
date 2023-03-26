@@ -1,2 +1,17 @@
 Lois I Omotara
 lo2173
+Contribution: I wrote the runserver.py program to run the web application based on response
+created using flask in the reg.py program. The reg.py program contains three functions, two
+which work based on the approute and one helper function. The purpose of the function search_results
+is to access the database to get the information to fill out the html template: regresults, based on
+the context of the search query and where it was called from (either as the homepage or from the
+"another search" on the regdetails page). The function regdetails works similarly by filling out the
+regresults.html template using flask and setting cookies to be used in the "another search" link. I
+created a total of 8 templates which correspond to one primary page, one secondary page, and error pages
+as needed.
+Sources: I accessed some documentation for html tables and the flask.request.url functionality
+as linked below and used ed:
+    https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html/4309993#4309993
+    https://tedboy.github.io/flask/generated/generated/flask.Request.url.html
+Time: 7 hrs
+Assessment: It was a really good way to learn the basics of HTML in my opinion I enjoyed it/
