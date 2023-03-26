@@ -2,16 +2,16 @@
 # Author: Lois I Omotara
 # reg.py
 #-----------------------------------------------------------------------
+import sys
 import flask
 import databasesearch as ds
 import classsearch as cs
-import line
-import textwrap as tw
-import sys
+import lineparser as lp
+
 #-----------------------------------------------------------------------
 app = flask.Flask(__name__)
 #-----------------------------------------------------------------------
-def cookieHandle():
+def cookiehandle():
     prev_dept = flask.request.cookies.get('deptcookie')
     if prev_dept.find('None')>=0:
         prev_dept = ''
@@ -52,7 +52,7 @@ def search_results():
         return flask.make_response(html_code)
     course_results_ = []
     for row in rawsearch:
-        course_results_.append(line.LineParser(row))
+        course_results_.append(lp.LineParser(row))
     if dept is None:
         dept = ''
     if num is None:
@@ -76,7 +76,7 @@ def search_results():
 
 @app.route('/regdetails',methods=['GET'])
 def regdetails():
-    previous = cookieHandle()
+    previous = cookiehandle()
     try:
         classid = flask.request.url.split('=')[1]
     except IndexError:
@@ -98,11 +98,11 @@ def regdetails():
             return flask.make_response(html_code)
         general = general[0]
         deptandnum =[]
-        for line in search.get_deptandnum():
-            deptandnum.append(line[0]+' '+line[1])
+        for row in search.get_deptandnum():
+            deptandnum.append(row[0]+' '+row[1])
         profs = []
-        for line in search.get_prof():
-            profs.append(line[0])
+        for row in search.get_prof():
+            profs.append(row[0])
     except Exception as ex:
         print(ex,file=sys.stderr)
         html_code=flask.render_template('errorpage.html',
@@ -115,6 +115,7 @@ def regdetails():
         course_id=general[0],dept_and_nums=deptandnum,
         area=general[6],title=general[7],description=general[8],
         professors=profs,prereqs=general[9],prev_dept=previous[0],
-        prev_num=previous[1],prev_area=previous[2],prev_title=previous[3])
+        prev_num=previous[1],prev_area=previous[2],
+        prev_title=previous[3])
     response = flask.make_response(html_code)
     return response
