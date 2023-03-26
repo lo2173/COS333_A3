@@ -11,7 +11,20 @@ import sys
 #-----------------------------------------------------------------------
 app = flask.Flask(__name__)
 #-----------------------------------------------------------------------
-
+def cookieHandle():
+    prev_dept = flask.request.cookies.get('deptcookie')
+    if prev_dept.find('None')>=0:
+        prev_dept = ''
+    prev_num = flask.request.cookies.get('numcookie')
+    if prev_num.find('None')>=0:
+        prev_num = ''
+    prev_area = flask.request.cookies.get('areacookie')
+    if prev_area.find('None')>=0:
+        prev_area = ''
+    prev_title = flask.request.cookies.get('titlecookie')
+    if prev_title.find('None')>=0:
+        prev_title = ''
+    return [prev_dept, prev_num,prev_area,prev_title]
 
 @app.route('/', methods =['GET'])
 def search_results():
@@ -34,7 +47,8 @@ def search_results():
     except Exception as ex:
         print(ex,file=sys.stderr)
         html_code=flask.render_template('errorpage.html',
-            type_error = 'A server error occured. Please contact the system adminstrator')
+            type_error = '''A server error occured.
+            Please contact the system adminstrator''')
         return flask.make_response(html_code)
     course_results_ = []
     for row in rawsearch:
@@ -62,18 +76,7 @@ def search_results():
 
 @app.route('/regdetails',methods=['GET'])
 def regdetails():
-    prev_dept = flask.request.cookies.get('deptcookie')
-    if prev_dept.find('None')>=0:
-        prev_dept = ''
-    prev_num = flask.request.cookies.get('numcookie')
-    if prev_num.find('None')>=0:
-        prev_num = ''
-    prev_area = flask.request.cookies.get('areacookie')
-    if prev_area.find('None')>=0:
-        prev_area = ''
-    prev_title = flask.request.cookies.get('titlecookie')
-    if prev_title.find('None')>=0:
-        prev_title = ''
+    previous = cookieHandle()
     try:
         classid = flask.request.url.split('=')[1]
     except IndexError:
@@ -86,8 +89,6 @@ def regdetails():
         html_code = flask.render_template('errorpage.html',
             type_error = 'Non-Integer Classid')
         return flask.make_response(html_code)
-    #wrapper = tw.TextWrapper(width = 72, break_long_words=True)
-
     try:
         search = cs.ClassSearch(classid)
         general= search.get_general()
@@ -96,38 +97,24 @@ def regdetails():
                 type_error = 'Non-Exisiting Classid')
             return flask.make_response(html_code)
         general = general[0]
-        deptandnums = search.get_deptandnum()
+        deptandnum =[]
+        for line in search.get_deptandnum():
+            deptandnum.append(line[0]+' '+line[1])
+        profs = []
+        for line in search.get_prof():
+            profs.append(line[0])
     except Exception as ex:
         print(ex,file=sys.stderr)
         html_code=flask.render_template('errorpage.html',
-            type_error = 'A server error occured. Please contact the system adminstrator')
+            type_error = '''A server error occured.
+            Please contact the system adminstrator''')
         return flask.make_response(html_code)
-    deptandnum =[]
-    for line in deptandnums:
-        deptandnum.append(line[0]+' '+line[1])
-    professors = search.get_prof()
-    profs = []
-    for line in professors:
-        profs.append(line[0])
-    course_id = general[0]
-    days = general[1]
-    starttime = general[2]
-    endtime = general[3]
-    building = general[4]
-    room = general[5]
-    area = general[6]
-    title = general[7]
-    #title = wrapper.wrap(title)
-    description = general[8]
-    #description = wrapper.wrap(description)
-    prereqs = general[9]
-    #prereqs = wrapper.wrap(prereqs)
     html_code = flask.render_template('regdetails.html',
-        class_id=classid,days=days,start_time=starttime,
-        end_time=endtime,building=building,room=room,
-        course_id=course_id,dept_and_nums=deptandnum,
-        area=area,title=title,description=description,
-        professors=profs,prereqs=prereqs,prev_dept=prev_dept,
-        prev_num=prev_num,prev_area=prev_area,prev_title=prev_title)
+        class_id=classid,days=general[1],start_time=general[2],
+        end_time=general[3],building=general[4],room=general[5],
+        course_id=general[0],dept_and_nums=deptandnum,
+        area=general[6],title=general[7],description=general[8],
+        professors=profs,prereqs=general[9],prev_dept=previous[0],
+        prev_num=previous[1],prev_area=previous[2],prev_title=previous[3])
     response = flask.make_response(html_code)
     return response

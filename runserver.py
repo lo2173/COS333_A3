@@ -3,9 +3,8 @@
 # runserver.py
 #-----------------------------------------------------------------------
 import sys
-import reg
 import argparse
-
+import reg
 def main():
     try:
         parser= argparse.ArgumentParser(prog='runserver.py',
